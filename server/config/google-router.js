@@ -2,7 +2,7 @@ var express = require('express');
 
 var google = require('googleapis');
 var prediction = google.prediction('v1.6');
-// var key = require('./Currency');
+var key = require('./Currency');
 
 var jwtClient = new google.auth.JWT(
   process.env.client_email || key.client_email,
