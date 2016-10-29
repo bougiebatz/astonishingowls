@@ -11,7 +11,6 @@ angular.module('astonishingOwls.factory', [])
       url: '/database'
     })
     .then(function (resp) {
-      console.log("response---", resp);
       return resp;
     });
   };
@@ -23,7 +22,6 @@ angular.module('astonishingOwls.factory', [])
       data: data
     })
     .then(function (resp) {
-      console.log("Posttttt response---", resp);
     });
   };
 
@@ -39,7 +37,7 @@ angular.module('astonishingOwls.factory', [])
     .then(function (resp) {
       return resp.data;
     });
-  }
+  };
 
   //Receive user input data from input field, and pass data to server api call
   var getHistorical = function(date){
@@ -47,8 +45,8 @@ angular.module('astonishingOwls.factory', [])
       method: 'GET',
       url: '/api/getHistorical',
       params: {date:date}
-    })
-  }
+    });
+  };
 
   //Receive all currency available from server api call
   var getListOfCurrencies = function(){
@@ -59,7 +57,7 @@ angular.module('astonishingOwls.factory', [])
     .then(function (resp) {
       return resp.data;
     });
-  }
+  };
 
 //
   var getPrediction = function(){
@@ -236,7 +234,7 @@ function ($q, $timeout, $http) {
      }
    }
    return null;
- }
+ };
 }) //end of keysGrabber
 
 
@@ -250,7 +248,7 @@ function ($q, $timeout, $http) {
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
     return [year, month, day].join('-');
-  }
+  };
 }) //end of formatDate
 
 //This is a shared service that was written to share data
@@ -264,5 +262,5 @@ function ($q, $timeout, $http) {
     getData: function(){
       return downloadedData;
     }
-  }
-}) //end of SharedVariables factory
+  };
+}); //end of SharedVariables factory
