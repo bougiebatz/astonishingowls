@@ -59,27 +59,30 @@ angular.module('astonishingOwls.factory', [])
     });
   };
 
-//
-  var getPrediction = function(){
+  //Retrieve prediction from Google Prediction API based on input currency and date
+  // Trained model will only take input in CSV form
+  var getPrediction = function(currency, date){
     return $http({
       method: 'POST',
       url: '/api/predict',
       data: {
-        currency:"CHF",
+        currency: currency,
         query: {
-        "input": {
-          "csvInstance": [
-            "20190531"
-          ]
+          "input": {
+            "csvInstance": [
+              date
+            ]
+          }
         }
       }
-    }
     })
     .then(function (resp) {
       return resp;
 
     });
   };
+
+  //Retrieve all trained currency models from Google Prediction API
   var getPredictionList = function(){
     return $http({
       method: 'GET',
@@ -91,7 +94,7 @@ angular.module('astonishingOwls.factory', [])
     });
   };
 
-//
+  //
   return {
     getall: getall,
     getHistorical: getHistorical,
@@ -112,113 +115,113 @@ function ($q, $timeout, $http) {
   var user = null;
 
   function isLoggedIn() {
-      if (user) {
-          return true;
-      } else {
-          return false;
-      }
+    if (user) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   function getUserStatus() {
-      return $http.get('/user/status')
-          // handle success
-          .success(function (data) {
-              if (data.status) {
-                  user = true;
-              } else {
-                  user = false;
-              }
-          })
-          // handle error
-          .error(function (data) {
-              user = false;
-          });
+    return $http.get('/user/status')
+    // handle success
+    .success(function (data) {
+      if (data.status) {
+        user = true;
+      } else {
+        user = false;
+      }
+    })
+    // handle error
+    .error(function (data) {
+      user = false;
+    });
   }
 
   function login(username, password) {
 
-      // create a new instance of deferred
-      var deferred = $q.defer();
+    // create a new instance of deferred
+    var deferred = $q.defer();
 
-      // send a post request to the server
-      $http.post('/user/login',
-          {username: username, password: password})
-          // handle success
-          .success(function (data, status) {
-              if (status === 200 && data.status) {
-                  user = true;
-                  deferred.resolve();
-              } else {
-                  user = false;
-                  deferred.reject();
-              }
-          })
-          // handle error
-          .error(function (data) {
-              user = false;
-              deferred.reject();
-          });
+    // send a post request to the server
+    $http.post('/user/login',
+    {username: username, password: password})
+    // handle success
+    .success(function (data, status) {
+      if (status === 200 && data.status) {
+        user = true;
+        deferred.resolve();
+      } else {
+        user = false;
+        deferred.reject();
+      }
+    })
+    // handle error
+    .error(function (data) {
+      user = false;
+      deferred.reject();
+    });
 
-      // return promise object
-      return deferred.promise;
+    // return promise object
+    return deferred.promise;
 
   }
 
   function logout() {
 
-      // create a new instance of deferred
-      var deferred = $q.defer();
+    // create a new instance of deferred
+    var deferred = $q.defer();
 
-      // send a get request to the server
-      $http.get('/user/logout')
-          // handle success
-          .success(function (data) {
-              user = false;
-              deferred.resolve();
-          })
-          // handle error
-          .error(function (data) {
-              user = false;
-              deferred.reject();
-          });
+    // send a get request to the server
+    $http.get('/user/logout')
+    // handle success
+    .success(function (data) {
+      user = false;
+      deferred.resolve();
+    })
+    // handle error
+    .error(function (data) {
+      user = false;
+      deferred.reject();
+    });
 
-      // return promise object
-      return deferred.promise;
+    // return promise object
+    return deferred.promise;
 
   }
 
   function register(username, password) {
 
-      // create a new instance of deferred
-      var deferred = $q.defer();
+    // create a new instance of deferred
+    var deferred = $q.defer();
 
-      // send a post request to the server
-      $http.post('/user/register',
-          {username: username, password: password})
-          // handle success
-          .success(function (data, status) {
-              if (status === 200 && data.status) {
-                  deferred.resolve();
-              } else {
-                  deferred.reject();
-              }
-          })
-          // handle error
-          .error(function (data) {
-              deferred.reject();
-          });
+    // send a post request to the server
+    $http.post('/user/register',
+    {username: username, password: password})
+    // handle success
+    .success(function (data, status) {
+      if (status === 200 && data.status) {
+        deferred.resolve();
+      } else {
+        deferred.reject();
+      }
+    })
+    // handle error
+    .error(function (data) {
+      deferred.reject();
+    });
 
-      // return promise object
-      return deferred.promise;
+    // return promise object
+    return deferred.promise;
   }
 
   // return available functions for use in the controllers
   return ({
-      isLoggedIn: isLoggedIn,
-      getUserStatus: getUserStatus,
-      login: login,
-      logout: logout,
-      register: register
+    isLoggedIn: isLoggedIn,
+    getUserStatus: getUserStatus,
+    login: login,
+    logout: logout,
+    register: register
   });
 
 }]) // End of AuthService factory
@@ -227,14 +230,14 @@ function ($q, $timeout, $http) {
 //This is relevant in the ng-options select window we designed
 //in the New Search fields
 .factory('keysGrabber',function(){
- return function(value, object){
-   for(var key in object){
-     if(object[key] == value){
-       return key;
-     }
-   }
-   return null;
- };
+  return function(value, object){
+    for(var key in object){
+      if(object[key] == value){
+        return key;
+      }
+    }
+    return null;
+  };
 }) //end of keysGrabber
 
 
@@ -242,9 +245,9 @@ function ($q, $timeout, $http) {
   //format date to YYYY-MM-DD
   return function(date) {
     var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
+    month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate(),
+    year = d.getFullYear();
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
     return [year, month, day].join('-');

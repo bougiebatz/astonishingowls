@@ -1,37 +1,28 @@
 angular.module('predict', [])
-
-
-
 .controller('predictController', ['$scope', '$location', 'Search', 'formatDate','SharedVariables',
 function($scope, $location, Search, formatDate, SharedVariables ){
 
+//This will list the prediction value returned from the trained model
+ $scope.prediction = '';
 
-  // $scope.availableOptions = {} //this is the result of the latest.JSON API call. gets most recent rates
-  // $scope.listOfCurrency = {}; //this is the result of the currencies.JSON API call
-  // $scope.historyRate = {}; //this is the object that's set up to take in the result of the four API
-  // //calls that are run after the search button is hit, showing today's rate, last week's rate, last mo, last yr
-  // $scope.selectedCurrency = ''; //full currency name, i.e. "United States Dollar"
-  // $scope.inputCurrency = ''; //it's the three letter keys, i.e. "USD"
-  // $scope.passedToDB = []; //this is the array that is passed to the database
-  // $scope.downloadedData = []; //this is the result of downloading data from the database
-  //
-  $scope.prediction = '';
-
-
+//This will display list of available trained currency models
  $scope.items = [];
 
-    Search.getPrediction()
+//Function to make call to Google Prediction API
+$scope.predict = function() {
+  //Take values entered through the HTML form and pass them to Google Prediction
+    Search.getPrediction($scope.predict.code, $scope.predict.date)
     .then(function(res){
-
+      //Set $scope.prediction to the value Google Prediction returns
         $scope.prediction = res.data.outputValue;
-
     });
+};
 
+//To be fully implemented later; this returns a list of trained currency models
+//in an array
     Search.getPredictionList()
     .then(function(res){
-
         $scope.items = res.data.items;
-
     });
 
 
