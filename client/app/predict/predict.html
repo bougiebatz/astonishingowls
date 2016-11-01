@@ -9,11 +9,23 @@
     </div>
 </header>
 
-<div ng-controller="predictController" class="grid">
+<div ng-controller="predictController" >
     <!-- <div  class="col-xs-12 col-md-6"> -->
       <h3>Prediction</h3>
-      <div> Prediction: {{prediction}} </div>
-      <div> {{items}} </div>
+      <div class='prediction' ng-model='prediction'> Prediction: {{prediction}}  </div>
+      <form class="form2" ng-submit="predict()">
+          <div class="form-group">
+              <label>Currency Code</label>
+              <input type="text" class="form-control" name="code" ng-model="predict.code" required>
+          </div>
+          <div class="form-group">
+              <label>Date (YYYYMMDD)</label>
+              <input type="text" class="form-control" name="date" ng-model="predict.date" required>
+          </div>
+          <div>
+              <button type="submit" class="predictButton" ng-disabled="disabled">Predict</button>
+          </div>
+      </form>
     <!-- </div> -->
 </div>
 
