@@ -4,14 +4,15 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
 var database = require('./db/dbmodels');
-var oauth = require('./oauth.js');
+var googleAuth = require('./googleAuth.js');
+// var oauth = require('./oauth.js');
 
 var debug = require('debug')('passport-mongo');
 var hash = require('bcrypt-nodejs');
 var path = require('path');
 var passport = require('passport');
 var localStrategy = require('passport-local');
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+// var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 var Twitter = require('twitter');
 
@@ -110,18 +111,18 @@ passport.use(new localStrategy(database.User.authenticate()));
 
 // configure google passport
 // oauth is exported from oauth.js
-passport.use(new GoogleStrategy({
-  clientID: oauth.google.clientID,
-  clientSecret: oauth.google.clientSecret,
-  callbackURL: oauth.google.callbackURL,
-  passReqToCallback: true
-  },
-  function(request, accessToken, refreshToken, profile, done) {
-    process.nextTick(function () {
-      return done(null, profile);
-    });
-  }
-));
+// passport.use(new GoogleStrategy({
+//   clientID: oauth.google.clientID,
+//   clientSecret: oauth.google.clientSecret,
+//   callbackURL: oauth.google.callbackURL,
+//   passReqToCallback: true
+//   },
+//   function(request, accessToken, refreshToken, profile, done) {
+//     process.nextTick(function () {
+//       return done(null, profile);
+//     });
+//   }
+// ));
 
 passport.serializeUser(function(user, done){
         console.log('serializing user.');
